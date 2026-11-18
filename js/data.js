@@ -26,7 +26,7 @@ window.PORTFOLIO = {
     slogan: "Transformando processos manuais em soluções inteligentes através de dados e automação.",
     linkedin: "https://www.linkedin.com/in/kauany-paula-silva-53954735a",
     email: "kauanyebook@gmail.com",               // ex.: "seuemail@gmail.com"
-    curriculo: "",               // coloque aqui o PDF do currículo (ex.: "assets/docs/curriculo-kauany.pdf")           // ex.: "assets/docs/curriculo-kauany.pdf"
+    curriculo: "assets/docs/curriculo-kauany.pdf",           // ex.: "assets/docs/curriculo-kauany.pdf"
     github: "https://github.com/Kaukau-gif",              // opcional
     instagram: "",           // opcional
     cargoHero: "Automação de Processos", // 2ª linha do título da Home

@@ -146,7 +146,7 @@
       '<h1 class="hero__title">' + esc(T[1]) + (T[2] ? ' <span class="grad">' + esc(T[2]) + "</span>" : "") + "</h1>" +
       '<p class="hero__intro">' + esc(P.resumo) + "</p>" +
       '<div class="hero__actions">' +
-      (P.curriculo ? '<a class="button" href="' + esc(P.curriculo) + '" download>Baixar currículo</a>'
+      (P.curriculo ? '<a class="button" href="' + esc(P.curriculo) + '" target="_blank" rel="noopener">Baixar currículo</a>'
         : '<a class="button is-pending" href="#contato" title="Adicione o PDF em js/data.js">Baixar currículo</a>') +
       '<a class="button button--ghost" href="' + (P.email ? "mailto:" + esc(P.email) : "#contato") + '">Entrar em contato</a></div>' +
       "</div>" + avatar() + "</section>" +
