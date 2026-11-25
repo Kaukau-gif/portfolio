@@ -263,6 +263,7 @@
     if (p.resultados.length) h += "<h2>Resultados esperados</h2>" + ul(p.resultados);
     if (p.ferramentas.length) h += "<h2>Ferramentas</h2>" + ul(p.ferramentas, "tag-list");
     if (p.competencias) h += "<h2>Competências desenvolvidas</h2>" + ul(p.competencias, "tag-list");
+    if (p.certificado) h += '<h2>Certificado</h2><a class="cert-block" href="' + esc(p.certificado.link) + '" target="_blank" rel="noopener"><img src="' + esc(p.certificado.src) + '" alt="Certificado de conclusão" loading="lazy"><span>Verificar certificado na Udemy</span></a>';
     if (p.galeria && p.galeria.length > 1) h += "<h2>Galeria</h2>" + '<div class="gallery' + (p.retrato ? " gallery--retrato" : "") + '">' + p.galeria.map((g, n) =>
       '<button type="button" data-lb-open="' + n + '"><img src="' + esc(g.src) + '" alt="' + esc(g.legenda) + '" loading="lazy"><span>' + esc(g.legenda) + "</span></button>").join("") + "</div>";
     h += "</div>";
@@ -310,10 +311,11 @@
 
       "<h2>Aprendizados e certificações</h2></div>" +
       '<div style="margin-top:24px">' + D.certificacoes.cursos.map((c) => '<article class="post-item course' + (c.imagem ? " course--cert" : "") + '">' +
-        (c.imagem ? '<a class="course__img" href="' + esc(c.link) + '" target="_blank" rel="noopener" aria-label="Ver certificado"><img src="' + esc(c.imagem) + '" alt="Certificado: ' + esc(c.nome) + '" loading="lazy"></a>' : "") +
+        (c.imagem ? '<a class="course__img" href="' + esc(c.link || c.imagem) + '" target="_blank" rel="noopener" aria-label="Ver certificado"><img src="' + esc(c.imagem) + '" alt="Certificado: ' + esc(c.nome) + '" loading="lazy"></a>' : "") +
         '<div><h3 class="post-item__title">' + esc(c.nome) + "</h3>" +
         '<p class="post-meta"><span>' + esc(c.orgao) + '</span><span class="post-meta__sep" aria-hidden="true"></span><span class="course__st' + (/andamento/i.test(c.situacao) ? " is-wip" : /Conclu/.test(c.situacao) ? " is-done" : "") + '">' + esc(c.situacao) + "</span></p>" +
-        (c.link ? '<p><a class="text-link" href="' + esc(c.link) + '" target="_blank" rel="noopener">Verificar certificado</a></p>' : "") + "</div></article>").join("") + "</div>" +
+        (c.link ? '<p><a class="text-link" href="' + esc(c.link) + '" target="_blank" rel="noopener">Verificar certificado</a></p>' : "") +
+        (c.serie ? '<p class="course__serie">Nº de série: ' + esc(c.serie) + "</p>" : "") + "</div></article>").join("") + "</div>" +
       '<div class="prose"><h3>Próximas certificações</h3></div><div class="cert-next">' +
       D.certificacoes.proximas.map((c) => "<div><b>" + esc(c.codigo) + "</b><span>" + esc(c.nome) + "</span></div>").join("") + "</div>" +
 

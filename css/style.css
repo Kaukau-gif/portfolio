@@ -727,3 +727,10 @@ body { background: var(--c-bg); color: var(--c-text); font-size: 15.5px; line-he
 .course .post-meta { flex-wrap: wrap; row-gap: 4px; }
 .course p + p { margin-top: 8px; }
 @media (max-width: 767px) { .course--cert { grid-template-columns: 1fr; } }
+
+/* Certificados extras */
+.course__serie { font-size: 13px; color: var(--c-muted); }
+.cert-block { display: block; max-width: 520px; margin-top: 16px; border-radius: 10px; overflow: hidden; border: 1px solid var(--c-rule); transition: transform .2s, box-shadow .2s; }
+.cert-block:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(244, 114, 182, .2); }
+.cert-block span { display: block; padding: 10px 14px; background: var(--c-surface); color: var(--c-link); font-size: 14px; }
+.work-detail__image img { background: #fff; }

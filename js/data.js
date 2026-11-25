@@ -301,9 +301,11 @@ window.PORTFOLIO = {
         "Gera um painel com indicadores por etapa, resumo de ações e alertas de atraso.",
         "Bloqueia o salvamento enquanto houver pedido atrasado sem Data Acordada atualizada, e só aceita datas válidas.",
         "Mantém histórico de status e log de alterações com usuário e data/hora.",
-        "Funciona com arquivos locais, OneDrive ou SharePoint e lembra o último Gantt usado. Nunca altera o Gantt nem o SAP."
+        "Funciona com arquivos locais, OneDrive ou SharePoint e lembra o último Gantt usado. Nunca altera o Gantt nem o SAP.",
+        "Dashboard com total de auditorias, % de conformidade, não conformidades por categoria, ranking de falhas e distribuição por responsável.",
+        "Fluxo no Power Automate que dispara a análise (Office Scripts) sempre que o arquivo do Gantt é modificado."
       ],
-      ferramentas: ["Excel VBA", "SAP (base exportada)", "SharePoint / OneDrive", "Fórmulas avançadas", "Formatação condicional", "IA para revisão de código"],
+      ferramentas: ["Excel VBA", "Office Scripts", "Power Automate", "SAP (base exportada)", "SharePoint / OneDrive", "Fórmulas avançadas", "Formatação condicional", "IA para revisão de código"],
       desafios: [
         "Gantt com estrutura diferente em cada aba e cabeçalhos que mudam de linha.",
         "Abas novas de máquinas sem status mapeado: criei um log automático para não perder nenhum pedido.",
@@ -342,7 +344,10 @@ window.PORTFOLIO = {
         { tipo: "auto", texto: "Painel, resumo e histórico" },
         { tipo: "end", texto: "Analista age só no que precisa" }
       ],
-      galeria: [],
+      galeria: [
+        { src: "assets/img/estagio/dashboard-auditoria.png", legenda: "Dashboard da auditoria: conformidade, não conformidades por categoria, ranking de falhas e responsáveis (dados anonimizados)" },
+        { src: "assets/img/estagio/fluxo-gantt-office-scripts.png", legenda: "Execução automática: o Power Automate roda a análise quando o arquivo do Gantt é modificado" }
+      ],
       mockPainel: true
     },
 
@@ -720,7 +725,9 @@ window.PORTFOLIO = {
         { tipo: "auto", texto: "Status Pronto alimenta faturamento" },
         { tipo: "end", texto: "Confirmação digital à logística" }
       ],
-      galeria: []
+      galeria: [
+        { src: "assets/img/estagio/bpmn-raias.png", legenda: "BPMN com raias por área (visão geral do processo)" }
+      ]
     },
 
     {
@@ -795,127 +802,206 @@ window.PORTFOLIO = {
       id: "fluxos-power-automate",
       analise: {
         "definir": {
-          "pergunta": "Como manter planilhas e relatórios atualizados sem depender de ação manual?",
+          "pergunta": "Como avisar a equipe e rodar análises sem depender de alguém lembrar de fazer isso?",
           "itens": [
-            "Critério de sucesso: informação atualizada no horário em que a equipe precisa."
+            "Critério de sucesso: a informação chega na hora certa e a análise roda sozinha quando os dados mudam."
           ]
         },
         "dados": {
-          "texto": "Arquivos da equipe armazenados no SharePoint.",
-          "itens": []
+          "texto": "Os fluxos trabalham com os dados do acompanhamento de pedidos:",
+          "dicionario": [
+            ["Fluxo de alerta", "StatusAtual", "Situação atual do pedido"],
+            ["Fluxo de alerta", "DataTermino", "Data prevista de término"],
+            ["Fluxo de alerta", "PedidoID", "Identificação do pedido no e-mail"],
+            ["Fluxo do Gantt", "Arquivo do Gantt (nuvem)", "Gatilho: dispara quando o arquivo é modificado"]
+          ]
         },
         "preparar": {
-          "texto": "Os fluxos atualizam as planilhas de origem em horários definidos.",
-          "itens": []
+          "texto": "Cuidados para o fluxo ser confiável:",
+          "itens": [
+            "Variáveis inicializadas antes da condição, para a regra ficar clara e fácil de manter.",
+            "Atraso antes de processar, para o arquivo terminar de ser salvo.",
+            "Bloco de escopo (try) para isolar e tratar erros na execução dos scripts."
+          ]
         },
         "apresentar": {
-          "texto": "Relatórios de acompanhamento operacional sempre atualizados.",
-          "itens": []
+          "texto": "O resultado chega a quem precisa:",
+          "itens": [
+            "E-mail enviado pelo Outlook quando a condição do pedido é atendida.",
+            "Scripts do Excel (Office Scripts) executados automaticamente para analisar o Gantt."
+          ]
         }
       },
-      competencias: ["Automação em nuvem", "Integração com SharePoint", "Agendamento de rotinas"],
+      competencias: ["Automação em nuvem", "Gatilhos de arquivo", "Office Scripts", "Tratamento de erros", "Notificações automáticas"],
       titulo: "Fluxos Power Automate na nuvem",
       categoria: "Power Automate",
       destaque: false,
       status: "Protótipo, ainda não implementado",
       resumo:
-        "Fluxos que mantêm planilhas e relatórios atualizados sozinhos, integrados ao SharePoint.",
+        "Dois fluxos em nuvem: um envia alerta por e-mail conforme o status do pedido, e outro roda a análise do Gantt sozinho quando o arquivo é modificado.",
       problema:
-        "Planilhas e relatórios de acompanhamento precisavam ser atualizados manualmente, e a informação chegava atrasada para quem decide.",
+        "Acompanhar mudanças de status e rodar a análise do Gantt dependia de alguém lembrar de verificar e executar tudo manualmente.",
       contexto:
-        "Arquivos compartilhados da equipe no SharePoint, usados no acompanhamento operacional de pedidos.",
+        "Arquivos de acompanhamento de pedidos armazenados na nuvem (OneDrive/SharePoint), usados por Vendas e PCP.",
       solucao: [
-        "Atualização automática de planilhas.",
-        "Integração com bibliotecas do SharePoint.",
-        "Atualização periódica de relatórios em horários definidos.",
-        "Geração automática de informações para o acompanhamento operacional."
+        "Fluxo de alerta: recebe status atual, data de término e número do pedido em variáveis, avalia uma condição e envia e-mail (Outlook) quando ela é verdadeira.",
+        "Fluxo do Gantt: disparado quando o arquivo é modificado, aguarda alguns instantes e executa, dentro de um bloco de tratamento de erros, os scripts que analisam o Gantt.",
+        "Integração entre Power Automate e Excel por meio de Office Scripts."
       ],
-      ferramentas: ["Power Automate", "SharePoint", "Excel"],
+      ferramentas: ["Power Automate", "Office Scripts", "Excel", "Outlook", "OneDrive / SharePoint"],
       desafios: [
-        "Garantir que os fluxos rodem sem depender de alguém lembrar."
+        "Evitar que o fluxo rode antes de o arquivo terminar de ser salvo.",
+        "Não deixar um erro no script interromper tudo sem aviso."
       ],
       resultados: [
-        "Dados atualizados sem ação manual.",
-        "Informação disponível no horário certo para a equipe."
+        "Análise do Gantt executada automaticamente a cada alteração.",
+        "Equipe avisada por e-mail sem precisar conferir manualmente."
       ],
       indicadores: [
-        { valor: "4", rotulo: "tipos de rotina automatizadas" }
+        { valor: "2", rotulo: "fluxos em nuvem" },
+        { valor: "1", rotulo: "integração com Office Scripts" }
       ],
       fluxo: [
-        { tipo: "start", texto: "Gatilho agendado" },
-        { tipo: "auto", texto: "Ler arquivo no SharePoint" },
-        { tipo: "auto", texto: "Atualizar planilha" },
-        { tipo: "end", texto: "Relatório atualizado" }
+        { tipo: "start", texto: "Arquivo do Gantt modificado" },
+        { tipo: "auto", texto: "Atraso" },
+        { tipo: "auto", texto: "Escopo try" },
+        { tipo: "auto", texto: "Script AnalisarGantt" },
+        { tipo: "end", texto: "Análise atualizada" }
       ],
-      galeria: []
+      galeria: [
+        { src: "assets/img/estagio/fluxo-gantt-office-scripts.png", legenda: "Fluxo disparado quando o arquivo do Gantt é modificado: atraso, escopo try e Office Scripts" },
+        { src: "assets/img/estagio/fluxo-alerta-email.png", legenda: "Fluxo de alerta: variáveis do pedido, condição e envio de e-mail" }
+      ]
     },
 
     {
       id: "dashboard-power-bi",
       analise: {
         "definir": {
-          "pergunta": "Quais pedidos estão atrasados, em que etapa estão e onde está o gargalo?",
+          "pergunta": "Quantos pedidos estão com status divergente entre SAP e Gantt, de que tipo e sob responsabilidade de quem?",
           "itens": [
             "Partes interessadas: Vendas, PCP e liderança de Supply Chain."
           ]
         },
         "dados": {
-          "texto": "Bases de pedidos exportadas do SAP e controles em Excel.",
+          "texto": "Resultados da auditoria Gantt × SAP: cada pedido auditado com data, responsável, categoria da não conformidade e status no Gantt.",
           "itens": []
         },
         "preparar": {
           "texto": "Tratamento e modelagem com Power Query antes da visualização.",
-          "itens": []
+          "itens": [
+            "Padronização das categorias de não conformidade e dos responsáveis por máquina.",
+            "Medidas de percentual de conformidade e não conformidade."
+          ]
         },
         "apresentar": {
-          "texto": "Dashboard com status dos pedidos, atrasos, pedidos por etapa, lead time e performance operacional.",
-          "itens": []
+          "texto": "Uma página de análise com cartões, filtros e três gráficos:",
+          "itens": [
+            "Cartões: total de auditorias, não conformidades, % de conformidade, % de não conformidade e pendências críticas.",
+            "Filtros por data, responsável, categoria e status no Gantt.",
+            "Evolução mensal, % de não conformidade por categoria e ocorrências por responsável."
+          ]
         }
       },
-      competencias: ["Modelagem de dados", "KPIs operacionais", "Storytelling com dados"],
-      titulo: "Dashboard de pedidos no Power BI",
+      competencias: ["Modelagem de dados", "Medidas e KPIs", "Segmentação de dados", "Storytelling com dados"],
+      titulo: "Dashboard Power BI: Análise de Status SAP",
       categoria: "Power BI",
       destaque: false,
       status: "Protótipo, ainda não implementado",
       resumo:
-        "Painel para acompanhar status, atrasos, pedidos por etapa, lead time e performance operacional.",
+        "Painel no Power BI que transforma o resultado da auditoria Gantt × SAP em indicadores de conformidade, com filtros por data, responsável, categoria e status.",
       problema:
-        "Sem um painel único, era difícil enxergar atrasos e gargalos a tempo de agir.",
+        "O resultado da auditoria ficava em planilha, sem uma visão rápida de quantos pedidos estavam com problema, de que tipo e sob responsabilidade de quem.",
       contexto:
         "Acompanhamento da carteira de pedidos por Vendas, PCP e liderança de Supply Chain.",
       solucao: [
         "Tratamento das bases com Power Query.",
-        "Indicadores de status dos pedidos, atrasos e pedidos por etapa.",
-        "Lead time e performance operacional.",
-        "Visual pensado para decisão rápida."
+        "Cartões de total de auditorias, não conformidades, % de conformidade e pendências críticas.",
+        "Segmentações por data, responsável, categoria e status no Gantt.",
+        "Gráficos de evolução mensal, não conformidade por categoria e ocorrências por responsável."
       ],
       ferramentas: ["Power BI", "Power Query", "Excel"],
       desafios: [
-        "Definir indicadores que respondem às perguntas reais da equipe."
+        "Definir indicadores que respondem às perguntas reais da equipe.",
+        "Deixar claro, em poucos segundos, onde está o problema."
       ],
       resultados: [
-        "Visibilidade dos pedidos em um só lugar.",
-        "Apoio à tomada de decisão com dados atualizados."
+        "Visibilidade da conformidade dos pedidos em um só lugar.",
+        "Responsáveis identificados para agir rápido."
       ],
       indicadores: [
-        { valor: "5", rotulo: "indicadores acompanhados" }
+        { valor: "5", rotulo: "cartões de indicadores" },
+        { valor: "4", rotulo: "filtros" },
+        { valor: "3", rotulo: "gráficos de análise" }
       ],
-      kpisLista: ["Status dos pedidos", "Atrasos", "Pedidos por etapa", "Lead time", "Performance operacional"],
+      kpisLista: ["Total de auditorias", "Não conformidades", "% de conformidade", "Pendências críticas", "Ocorrências por responsável"],
       fluxo: [
-        { tipo: "start", texto: "Bases de pedidos" },
+        { tipo: "start", texto: "Resultado da auditoria" },
         { tipo: "auto", texto: "Power Query" },
         { tipo: "auto", texto: "Modelo e medidas" },
         { tipo: "end", texto: "Dashboard de decisão" }
       ],
-      galeria: []
+      galeria: [
+        { src: "assets/img/estagio/powerbi-status-sap.png", legenda: "Página “Análise Status SAP” no Power BI (dados anonimizados)" }
+      ]
+    },
+
+    {
+      id: "laboratorio-power-automate",
+      competencias: ["Gatilhos e ações", "Variáveis e expressões", "Condições e Switch", "Loops", "Aprovações", "Integração com Forms e Outlook"],
+      titulo: "Laboratório de Power Automate",
+      categoria: "Power Automate",
+      destaque: false,
+      status: "Curso concluído com certificado",
+      resumo:
+        "Fluxos que construí no curso completo de Power Automate (17,5 h, Udemy): de variáveis e condições até aprovações com Microsoft Forms.",
+      problema: "", contexto: "",
+      solucao: [
+        "Previsão do tempo: busca a previsão do dia, monta a mensagem com Compor e envia por e-mail.",
+        "Previsão do tempo com parâmetros informados na execução.",
+        "Variáveis: inicialização, incremento e decremento.",
+        "Condições: verifica se o número é positivo e usa Switch para somar, subtrair, multiplicar ou dividir.",
+        "Loop “Faça até”: incrementa uma variável e adiciona resultados a um array.",
+        "Solicitação de pessoas: nova resposta no Microsoft Forms inicia uma aprovação e segue caminhos diferentes conforme a decisão."
+      ],
+      ferramentas: ["Power Automate", "Microsoft Forms", "Aprovações", "Outlook", "Expressões"],
+      desafios: [
+        "Entender a lógica de cada tipo de ação antes de aplicar em problemas reais do trabalho."
+      ],
+      resultados: [
+        "Base sólida para os fluxos do estágio, como o alerta por e-mail e a execução automática da análise do Gantt."
+      ],
+      indicadores: [
+        { valor: "17,5 h", rotulo: "de curso concluído" },
+        { valor: "9", rotulo: "fluxos de exercício" }
+      ],
+      fluxo: [
+        { tipo: "start", texto: "Nova resposta no Forms" },
+        { tipo: "auto", texto: "Obter detalhes da resposta" },
+        { tipo: "auto", texto: "Iniciar e aguardar aprovação" },
+        { tipo: "decision", texto: "Aprovado?" },
+        { tipo: "end", texto: "Seguir o caminho da decisão" }
+      ],
+      galeria: [
+        { src: "assets/img/curso-pa/wf12-forms-aprovacao.png", legenda: "Forms + aprovação + condição" },
+        { src: "assets/img/curso-pa/wf09-condicoes-switch.png", legenda: "Condição e Switch: calculadora" },
+        { src: "assets/img/curso-pa/wf10-loop-faca-ate.png", legenda: "Loop “Faça até” com array" },
+        { src: "assets/img/curso-pa/wf08-variaveis.png", legenda: "Variáveis: incremento e decremento" },
+        { src: "assets/img/curso-pa/wf04-previsao-email.png", legenda: "Previsão do tempo enviada por e-mail" },
+        { src: "assets/img/curso-pa/wf03-previsao-compor.png", legenda: "Previsão do tempo com Compor" },
+        { src: "assets/img/curso-pa/lista-de-fluxos.png", legenda: "Meus fluxos do curso e do estágio" }
+      ],
+      certificado: { src: "assets/img/certificados/power-automate-udemy.jpg", link: "https://ude.my/UC-cc62bbc0-4052-4c95-8d14-fa522c24e06a" }
     }
   ],
 
   certificacoes: {
     cursos: [
+      { nome: "Power Automate: Curso Completo", orgao: "Udemy, Ricardo Pacheco", situacao: "Concluído em 24/11/2026 (17,5 h)", link: "https://ude.my/UC-cc62bbc0-4052-4c95-8d14-fa522c24e06a", imagem: "assets/img/certificados/power-automate-udemy.jpg" },
+      { nome: "Tratativas de Dados no Excel via Power Query", orgao: "Udemy, Pedro Henrique Franco", situacao: "Concluído em 24/11/2026 (4,5 h)", link: "https://ude.my/UC-502f6023-c5da-446e-904f-76d8eee0ed4c", imagem: "assets/img/certificados/power-query-udemy.jpg" },
       { nome: "Automação SAP com Excel VBA e GUI Scripting: Do 0 ao Expert", orgao: "Udemy, Edmauro Américo Américo", situacao: "Concluído em 09/11/2026 (4,5 h)", link: "https://ude.my/UC-bac29f20-8e3e-4c61-a1ff-a694930bb367", imagem: "assets/img/certificado-sap-vba.jpg" },
-      { nome: "Power Automate: Curso Completo", orgao: "Udemy, Ricardo Pacheco", situacao: "Em andamento" },
-      { nome: "Tratativas de Dados no Excel via Power Query", orgao: "Udemy, Pedro Henrique Franco", situacao: "Em andamento" },
+      { nome: "Prompting Responsável: Maximizar a IA no seu negócio", orgao: "Santander Open Academy, conteúdo Microsoft e Founderz", situacao: "Concluído em 17/09/2026 (8 h)", serie: "OA-2026-0917003206700", imagem: "assets/img/certificados/prompting-responsavel-microsoft.jpg" },
+      { nome: "Fundamentos de segurança cibernética", orgao: "Santander Open Academy, conteúdo IBM", situacao: "Concluído em 16/09/2026 (1,5 h)", serie: "OA-2026-0916003203181", imagem: "assets/img/certificados/seguranca-cibernetica-ibm.jpg" },
       { nome: "Fundamentos da Análise de Dados", orgao: "Cisco Networking Academy", situacao: "Curso" },
       { nome: "Trilhas Microsoft Learn", orgao: "Microsoft", situacao: "Estudo contínuo" }
     ],
@@ -992,7 +1078,7 @@ window.PORTFOLIO = {
       { nome: "BPMN e UML", texto: "Modelagem de processos e sistemas." }
     ]},
     { grupo: "IA", itens: [
-      { nome: "Inteligência Artificial", texto: "IA generativa para prototipar, revisar código e documentar." }
+      { nome: "Inteligência Artificial", texto: "IA generativa para prototipar, revisar código e documentar, com prompting responsável." }
     ]}
   ],
 
@@ -1005,7 +1091,7 @@ window.PORTFOLIO = {
     { nome: "Power Automate", estado: "aplicando" },
     { nome: "IA Generativa", estado: "aplicando" },
     { nome: "SAP GUI Scripting", estado: "aplicando" },
-    { nome: "Power Query", estado: "praticando" },
+    { nome: "Power Query", estado: "aplicando" },
     { nome: "APIs REST", estado: "praticando" },
     { nome: "Make", estado: "estudando" },
     { nome: "Integrações", estado: "estudando" },
