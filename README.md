@@ -33,3 +33,5 @@ Para atualizar textos, projetos e links, basta editar `js/data.js`.
 
 ---
 Os projetos do estágio são apresentados com dados e nomes anonimizados.
+
+_Última atualização: 24/11/2026: novos certificados, prints dos projetos e Laboratório de Power Automate._
