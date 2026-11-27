@@ -1002,6 +1002,7 @@ window.PORTFOLIO = {
       { nome: "Automação SAP com Excel VBA e GUI Scripting: Do 0 ao Expert", orgao: "Udemy, Edmauro Américo Américo", situacao: "Concluído em 09/11/2026 (4,5 h)", link: "https://ude.my/UC-bac29f20-8e3e-4c61-a1ff-a694930bb367", imagem: "assets/img/certificado-sap-vba.jpg" },
       { nome: "Prompting Responsável: Maximizar a IA no seu negócio", orgao: "Santander Open Academy, conteúdo Microsoft e Founderz", situacao: "Concluído em 17/09/2026 (8 h)", serie: "OA-2026-0917003206700", imagem: "assets/img/certificados/prompting-responsavel-microsoft.jpg" },
       { nome: "Fundamentos de segurança cibernética", orgao: "Santander Open Academy, conteúdo IBM", situacao: "Concluído em 16/09/2026 (1,5 h)", serie: "OA-2026-0916003203181", imagem: "assets/img/certificados/seguranca-cibernetica-ibm.jpg" },
+      { nome: "Lógica de Programação Para Iniciantes e Estudantes", orgao: "Udemy, Wagner Cardoso", situacao: "Concluído em 03/10/2025 (6 h)", link: "https://ude.my/UC-0cce52f6-cc6b-49aa-929e-4d54d7f6e996", imagem: "assets/img/certificados/logica-programacao-udemy.jpg" },
       { nome: "Fundamentos da Análise de Dados", orgao: "Cisco Networking Academy", situacao: "Curso" },
       { nome: "Trilhas Microsoft Learn", orgao: "Microsoft", situacao: "Estudo contínuo" }
     ],
